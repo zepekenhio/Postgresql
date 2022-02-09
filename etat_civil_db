@@ -1,0 +1,240 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.6.0
+-- Dumped by pg_dump version 9.6.0
+
+-- Started on 2022-02-09 10:04:19
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 1 (class 3079 OID 12387)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 2147 (class 0 OID 0)
+-- Dependencies: 1
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 190 (class 1259 OID 16491)
+-- Name: enfant; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE enfant (
+    id integer NOT NULL,
+    fname character varying(100) NOT NULL,
+    lname character varying(100) NOT NULL,
+    sexe character varying(100) NOT NULL,
+    time_of_birth time without time zone NOT NULL,
+    date_of_birth date NOT NULL,
+    city_of_birth character varying(100) NOT NULL,
+    pere_id integer NOT NULL,
+    mere_id integer NOT NULL
+);
+
+
+ALTER TABLE enfant OWNER TO postgres;
+
+--
+-- TOC entry 189 (class 1259 OID 16489)
+-- Name: enfant_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE enfant_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE enfant_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2148 (class 0 OID 0)
+-- Dependencies: 189
+-- Name: enfant_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE enfant_id_seq OWNED BY enfant.id;
+
+
+--
+-- TOC entry 188 (class 1259 OID 16464)
+-- Name: mere; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE mere (
+    id integer NOT NULL,
+    fname character varying(100) NOT NULL,
+    lname character varying(100) NOT NULL,
+    mstatus character varying(100) NOT NULL,
+    profession character varying(100) NOT NULL
+);
+
+
+ALTER TABLE mere OWNER TO postgres;
+
+--
+-- TOC entry 187 (class 1259 OID 16462)
+-- Name: mere_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE mere_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE mere_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2149 (class 0 OID 0)
+-- Dependencies: 187
+-- Name: mere_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE mere_id_seq OWNED BY mere.id;
+
+
+--
+-- TOC entry 186 (class 1259 OID 16456)
+-- Name: pere; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE pere (
+    id integer NOT NULL,
+    fname character varying(100) NOT NULL,
+    lname character varying(100) NOT NULL,
+    mstatus character varying(100) NOT NULL,
+    profession character varying(100) NOT NULL
+);
+
+
+ALTER TABLE pere OWNER TO postgres;
+
+--
+-- TOC entry 185 (class 1259 OID 16454)
+-- Name: pere_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE pere_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE pere_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2150 (class 0 OID 0)
+-- Dependencies: 185
+-- Name: pere_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE pere_id_seq OWNED BY pere.id;
+
+
+--
+-- TOC entry 2015 (class 2604 OID 16494)
+-- Name: enfant id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY enfant ALTER COLUMN id SET DEFAULT nextval('enfant_id_seq'::regclass);
+
+
+--
+-- TOC entry 2014 (class 2604 OID 16467)
+-- Name: mere id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY mere ALTER COLUMN id SET DEFAULT nextval('mere_id_seq'::regclass);
+
+
+--
+-- TOC entry 2013 (class 2604 OID 16459)
+-- Name: pere id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY pere ALTER COLUMN id SET DEFAULT nextval('pere_id_seq'::regclass);
+
+
+--
+-- TOC entry 2021 (class 2606 OID 16496)
+-- Name: enfant enfant_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY enfant
+    ADD CONSTRAINT enfant_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2019 (class 2606 OID 16469)
+-- Name: mere mere_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY mere
+    ADD CONSTRAINT mere_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2017 (class 2606 OID 16461)
+-- Name: pere pere_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY pere
+    ADD CONSTRAINT pere_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2023 (class 2606 OID 16502)
+-- Name: enfant enfant_mere_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY enfant
+    ADD CONSTRAINT enfant_mere_id_fkey FOREIGN KEY (mere_id) REFERENCES mere(id);
+
+
+--
+-- TOC entry 2022 (class 2606 OID 16497)
+-- Name: enfant enfant_pere_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY enfant
+    ADD CONSTRAINT enfant_pere_id_fkey FOREIGN KEY (pere_id) REFERENCES pere(id);
+
+
+-- Completed on 2022-02-09 10:04:19
+
+--
+-- PostgreSQL database dump complete
+--
+
